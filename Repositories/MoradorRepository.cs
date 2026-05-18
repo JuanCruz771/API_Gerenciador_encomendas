@@ -1,8 +1,11 @@
-﻿namespace API_Gerendiador_Encomendas.Repositories
+﻿using API_Gerendiador_Encomendas.Models;
+
+namespace API_Gerendiador_Encomendas.Repositories
 {
-    public interface MoradorRepository
+    public interface IMoradorRepository
     {
         void save();
         void Update();
+        void delete();
     }
 }

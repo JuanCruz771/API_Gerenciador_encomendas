@@ -1,43 +1,87 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using API_Gerendiador_Encomendas.Models;
+using API_Gerendiador_Encomendas.Repositories;
+using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace API_Gerendiador_Encomendas.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("API/Encomenda")]
     [ApiController]
     public class EncomendaController : ControllerBase
     {
-        // GET: api/<EncomendaController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+
+        private readonly EncomdaRepository encomenda_repositorie;
+
+        public EncomendaController(EncomdaRepository encomenda_repositorie)
         {
-            return new string[] { "value1", "value2" };
+            this.encomenda_repositorie = encomenda_repositorie;
+        }
+
+
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            var encomenda = encomenda_repositorie.GetAll();
+            return Ok(encomenda);
         }
 
         // GET api/<EncomendaController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public IActionResult GetById(int id)
         {
-            return "value";
+            var encomenda = encomenda_repositorie.GetById(id);
+
+            return Ok(encomenda);
         }
 
         // POST api/<EncomendaController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post([FromBody] EncomendaModel encomeda)
         {
+            var encomenda = new EncomendaModel
+            {
+                Codigo = encomeda.Codigo,
+                Nome_morador = encomeda.Nome_morador,
+                Id_morador = encomeda.Id_morador,
+                Observacao = encomeda.Observacao,
+                Data_recebida = encomeda.Data_recebida,
+                Data_entrega = encomeda.Data_entrega
+            };
+
+            this.encomenda_repositorie.save(encomenda);
+            return Ok();
         }
 
         // PUT api/<EncomendaController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public IActionResult Put(int id, [FromBody] EncomendaModel encomeda)
         {
+            var encomendaexist = this.encomenda_repositorie.GetById(id);
+
+            if (encomendaexist == null) { return NotFound(); }
+
+            var encomenda = new EncomendaModel
+            {
+               Id = id,
+               Codigo = encomeda.Codigo,
+               Nome_morador = encomeda.Nome_morador,
+               Id_morador = encomeda.Id_morador,
+               Observacao = encomeda.Observacao,
+               Data_recebida = encomeda.Data_recebida,
+               Data_entrega = encomeda.Data_entrega
+             };
+    
+             this.encomenda_repositorie.Update(encomenda);
+             return Ok();
+
         }
 
         // DELETE api/<EncomendaController>/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+
         }
     }
 }
