@@ -2,7 +2,7 @@
 
 namespace API_Gerendiador_Encomendas.Repositories
 {
-    public interface IMoradorRepository
+    public interface iMoradorRepository
     {
         void save();
         void Update();

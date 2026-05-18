@@ -1,4 +1,5 @@
-﻿using API_Gerendiador_Encomendas.Models;
+﻿using API_Gerendiador_Encomendas.DAO;
+using API_Gerendiador_Encomendas.Models;
 using API_Gerendiador_Encomendas.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,9 +12,9 @@ namespace API_Gerendiador_Encomendas.Controllers
     public class EncomendaController : ControllerBase
     {
 
-        private readonly EncomdaRepository encomenda_repositorie;
+        private readonly iEncomendaRepository encomenda_repositorie;
 
-        public EncomendaController(EncomdaRepository encomenda_repositorie)
+        public EncomendaController(iEncomendaRepository encomenda_repositorie)
         {
             this.encomenda_repositorie = encomenda_repositorie;
         }

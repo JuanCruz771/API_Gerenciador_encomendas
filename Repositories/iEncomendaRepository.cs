@@ -3,7 +3,7 @@
 namespace API_Gerendiador_Encomendas.Repositories
 {
     
-    public interface EncomdaRepository
+    public interface iEncomendaRepository
     {
         List<EncomendaModel> GetAll();
 

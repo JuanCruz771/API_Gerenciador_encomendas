@@ -1,11 +1,25 @@
+using API_Gerendiador_Encomendas.DAO;
+using API_Gerendiador_Encomendas.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+
+// Adiciona política CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("PermitirTudo", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddTransient<iEncomendaRepository, EncomendaRepository>();
 
 var app = builder.Build();
 
