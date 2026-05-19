@@ -7,6 +7,7 @@ namespace API_Gerendiador_Encomendas.DAO
     {
         public DbSet<EncomendaModel> encomendas { get; set; }
         public DbSet<MoradorModel> moradores { get; set; }
+        public DbSet<Usermodel> usuarios { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
