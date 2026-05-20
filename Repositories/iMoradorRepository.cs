@@ -4,8 +4,11 @@ namespace API_Gerendiador_Encomendas.Repositories
 {
     public interface iMoradorRepository
     {
-        void save();
-        void Update();
+        List<MoradorModel> GetAll();
+
+        MoradorModel GetById(int id);
+        void save(MoradorModel morador);
+        void Update(MoradorModel morador );
         void delete();
     }
 }

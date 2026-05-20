@@ -1,12 +1,14 @@
 ﻿using API_Gerendiador_Encomendas.DAO;
 using API_Gerendiador_Encomendas.Models;
 using API_Gerendiador_Encomendas.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace API_Gerendiador_Encomendas.Controllers
 {
+    [Authorize]
     [Route("API/Encomenda")]
     [ApiController]
     public class EncomendaController : ControllerBase
@@ -20,6 +22,7 @@ namespace API_Gerendiador_Encomendas.Controllers
         }
 
 
+        [Authorize]
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -27,7 +30,7 @@ namespace API_Gerendiador_Encomendas.Controllers
             return Ok(encomenda);
         }
 
-        // GET api/<EncomendaController>/5
+        [Authorize]
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
@@ -36,7 +39,7 @@ namespace API_Gerendiador_Encomendas.Controllers
             return Ok(encomenda);
         }
 
-        // POST api/<EncomendaController>
+        [Authorize]
         [HttpPost]
         public IActionResult Post([FromBody] EncomendaModel encomeda)
         {
@@ -54,7 +57,7 @@ namespace API_Gerendiador_Encomendas.Controllers
             return Ok();
         }
 
-        // PUT api/<EncomendaController>/5
+        [Authorize]
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] EncomendaModel encomeda)
         {
@@ -78,7 +81,7 @@ namespace API_Gerendiador_Encomendas.Controllers
 
         }
 
-        // DELETE api/<EncomendaController>/5
+        [Authorize]
         [HttpDelete("{id}")]
         public void Delete(int id)
         {

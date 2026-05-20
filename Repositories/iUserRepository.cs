@@ -6,6 +6,8 @@ namespace API_Gerendiador_Encomendas.Repositories
     {
         List<Usermodel> GetAll();
 
+        void login(Usermodel user);
+
         Usermodel GetById(int id);
         void save(Usermodel user);
         void Update(Usermodel user);

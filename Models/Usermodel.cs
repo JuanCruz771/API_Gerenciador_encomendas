@@ -1,10 +1,13 @@
-﻿namespace API_Gerendiador_Encomendas.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace API_Gerendiador_Encomendas.Models
 {
+    [Table ("Usuarios")]
     public class Usermodel
     {
-        public int id { get; set; }
-        public string nome { get; set; }
-        public string email { get; set; }
-        public string password { get; set; }
+        public int Id { get; set; }
+        public string? Nome { get; set; }
+        public string? Email { get; set; }
+        public string? Password { get; set; }
     }
 }

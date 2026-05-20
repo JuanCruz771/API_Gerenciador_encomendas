@@ -1,5 +1,7 @@
 using API_Gerendiador_Encomendas.DAO;
 using API_Gerendiador_Encomendas.Repositories;
+using API_Gerendiador_Encomendas.Services;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -7,8 +9,6 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
-// Adiciona política CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("PermitirTudo", policy =>
@@ -20,70 +20,103 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddControllers();
+
 builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddSwaggerGen(c =>
 {
-    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
-        Name = "Authorization",
-        In = ParameterLocation.Header,
-        Type = SecuritySchemeType.ApiKey,
-        Scheme = "Bearer"
-    });
+    c.SwaggerDoc("v1",
+        new OpenApiInfo
+        {
+            Title = "Minha API",
+            Version = "v1"
+        });
 
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement()
-    {
-    {
+    c.AddSecurityDefinition("Bearer",
         new OpenApiSecurityScheme
         {
-        Reference = new OpenApiReference
-            {
-            Type = ReferenceType.SecurityScheme,
-            Id = "Bearer"
-            },
-            Scheme = "oauth2",
-            Name = "Bearer",
+            Name = "Authorization",
+            Type = SecuritySchemeType.Http,
+            Scheme = "bearer",
+            BearerFormat = "JWT",
             In = ParameterLocation.Header,
+            Description = "Insira: Bearer {token}"
+        });
 
-        },
-        new List<string>()
-        }
-    });
-
-
+    c.AddSecurityRequirement(
+        new OpenApiSecurityRequirement
+        {
+            {
+                new OpenApiSecurityScheme
+                {
+                    Reference =
+                        new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                },
+                Array.Empty<string>()
+            }
+        });
 });
 
-var key = Encoding.ASCII.GetBytes(API_Gerendiador_Encomendas.Key.Secret);
+var key = Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Key"]);
 
-builder.Services.AddAuthentication(x =>
+builder.Services
+.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+.AddJwtBearer(options =>
 {
-    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(x =>
-{
-    x.RequireHttpsMetadata = false;
-    x.SaveToken = true;
-    x.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(key),
-        ValidateIssuer = false,
-        ValidateAudience = false
-    };
+    options.RequireHttpsMetadata = false;
+
+    options.SaveToken = true;
+
+    options.TokenValidationParameters =
+        new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+
+            IssuerSigningKey =
+                new SymmetricSecurityKey(key),
+
+            ValidateIssuer = false,
+
+            ValidateAudience = false
+        };
 });
 
-builder.Services.AddTransient<iEncomendaRepository, EncomendaRepository>();
+builder.Services.AddAuthorization();
+
+builder.Services.AddScoped<TokenService>();
+
+builder.Services.AddScoped<iUserRepository, UserRepository>();
+
+builder.Services.AddScoped<iEncomendaRepository, EncomendaRepository>();
+
+builder.Services.AddScoped<iMoradorRepository, MoradorRepository>();
+
+builder.Services.AddDbContext<ConnectionContext>(options =>
+    options.UseNpgsql(
+        "Host=" +
+        "Port=;" +
+        "Database=;" +
+        "Username=;" +
+        "Password="));
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
+
     app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("PermitirTudo");
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
