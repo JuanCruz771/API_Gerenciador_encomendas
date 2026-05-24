@@ -22,7 +22,7 @@ namespace API_Gerendiador_Encomendas.Controllers
         }
 
 
-        [Authorize]
+        
         [HttpGet]
         public IActionResult GetAll()
         {
