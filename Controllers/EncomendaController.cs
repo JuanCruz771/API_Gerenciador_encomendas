@@ -8,7 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API_Gerendiador_Encomendas.Controllers
 {
-    
+
+    [Authorize]
     [Route("API/Encomenda")]
     [ApiController]
     public class EncomendaController : ControllerBase
@@ -22,7 +23,7 @@ namespace API_Gerendiador_Encomendas.Controllers
         }
 
 
-        
+        [Authorize]
         [HttpGet]
         public IActionResult GetAll()
         {
