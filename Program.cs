@@ -97,6 +97,8 @@ builder.Services.AddScoped<iEncomendaRepository, EncomendaRepository>();
 builder.Services.AddScoped<iMoradorRepository, MoradorRepository>();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+Console.WriteLine("STRING:");
+Console.WriteLine(connectionString);
 
 // adiciona DbContext PostgreSQL
 builder.Services.AddDbContext<ConnectionContext>(options =>
