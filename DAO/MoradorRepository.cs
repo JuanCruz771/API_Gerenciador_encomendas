@@ -22,6 +22,11 @@ namespace API_Gerendiador_Encomendas.DAO
             return context.moradores.ToList();
         }
 
+        public MoradorModel GetByCasa(string casa)
+        {
+            return context.moradores.FirstOrDefault(m => m.Casa == casa);
+        }
+
         public MoradorModel GetById(int id)
         {
             return context.moradores.FirstOrDefault(m => m.Id == id);

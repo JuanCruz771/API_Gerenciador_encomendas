@@ -35,6 +35,15 @@ namespace API_Gerendiador_Encomendas.Controllers
         }
 
         [Authorize]
+        [HttpGet("{casa}")]
+        public IActionResult GetByCasa(string casa)
+        {
+            var morador = morador_repositorie.GetByCasa(casa);
+
+            return Ok(morador);
+        }
+
+        [Authorize]
         [HttpPost]
         public IActionResult Post([FromBody] MoradorModel morador)
         {
