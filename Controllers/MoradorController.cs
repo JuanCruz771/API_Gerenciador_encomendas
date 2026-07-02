@@ -26,7 +26,7 @@ namespace API_Gerendiador_Encomendas.Controllers
         }
 
         [Authorize]
-        [HttpGet("{id}")]
+        [HttpGet("id/{id}")]
         public IActionResult GetById(int id)
         {
             var morador = morador_repositorie.GetById(id);
@@ -35,7 +35,7 @@ namespace API_Gerendiador_Encomendas.Controllers
         }
 
         [Authorize]
-        [HttpGet("{casa}")]
+        [HttpGet("casa/{casa}")]
         public IActionResult GetByCasa(string casa)
         {
             var morador = morador_repositorie.GetByCasa(casa);
