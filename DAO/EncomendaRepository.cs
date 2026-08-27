@@ -1,5 +1,6 @@
 ﻿using API_Gerendiador_Encomendas.Models;
 using API_Gerendiador_Encomendas.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace API_Gerendiador_Encomendas.DAO
 {
@@ -23,23 +24,25 @@ namespace API_Gerendiador_Encomendas.DAO
                 .FirstOrDefault(e => e.Id == id);
         }
 
-        public void save(EncomendaModel estoque)
+        public void save(EncomendaModel encomenda)
         {
-            context.encomendas.Add(estoque);
+            context.encomendas.Add(encomenda);
 
             context.SaveChanges();
         }
 
-        public void Update(EncomendaModel estoque)
-        {
-            context.encomendas.Update(estoque);
+        
 
-            context.SaveChanges();
+        public void Delete(int id)
+        {
+             context.encomendas
+                .Where(e => e.Id == id)
+                .ExecuteDeleteAsync();
         }
 
-        public void delete()
+        public void Update(EncomendaModel encomenda)
         {
-            throw new NotImplementedException();
+            context.SaveChanges();
         }
     }
 }

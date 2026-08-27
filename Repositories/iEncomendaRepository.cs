@@ -10,7 +10,7 @@ namespace API_Gerendiador_Encomendas.Repositories
         EncomendaModel GetById(int id);
         void save(EncomendaModel encomenda);
         void Update(EncomendaModel encomenda);
-        void delete();
+        void Delete(int id);
 
     }
 }

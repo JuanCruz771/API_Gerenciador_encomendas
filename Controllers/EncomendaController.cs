@@ -62,31 +62,49 @@ namespace API_Gerendiador_Encomendas.Controllers
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] EncomendaModel encomeda)
         {
-            var encomendaexist = this.encomenda_repositorie.GetById(id);
+            var encomendaexist = encomenda_repositorie.GetById(id);
 
-            if (encomendaexist == null) { return NotFound(); }
-
-            var encomenda = new EncomendaModel
+            if (encomendaexist == null)
             {
-               Id = id,
-               Codigo = encomeda.Codigo,
-               Nome_morador = encomeda.Nome_morador,
-               Id_morador = encomeda.Id_morador,
-               Observacao = encomeda.Observacao,
-               Data_recebida = encomeda.Data_recebida,
-               Data_entrega = encomeda.Data_entrega
-             };
-    
-             this.encomenda_repositorie.Update(encomenda);
-             return Ok();
+                return NotFound();
+            }
 
+            encomendaexist.Codigo = encomeda.Codigo;
+            encomendaexist.Nome_morador = encomeda.Nome_morador;
+            encomendaexist.Id_morador = encomeda.Id_morador;
+            encomendaexist.Observacao = encomeda.Observacao;
+            encomendaexist.Data_recebida = encomeda.Data_recebida;
+            encomendaexist.Data_entrega = encomeda.Data_entrega;
+
+            encomenda_repositorie.Update(encomendaexist);
+
+            return Ok();
+        }
+
+        [HttpPut("{id}/entrega")]
+        public IActionResult Put_entrega(int id, [FromBody] EntregaModel dto)
+        {
+            var encomendaexist = encomenda_repositorie.GetById(id);
+
+            if (encomendaexist == null)
+            {
+                return NotFound();
+            }
+
+            encomendaexist.Data_entrega = dto.Data_entrega;
+
+            encomenda_repositorie.Update(encomendaexist);
+
+            return Ok();
         }
 
         [Authorize]
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
+            encomenda_repositorie.Delete(id);
 
+            return Ok();
         }
     }
 }
