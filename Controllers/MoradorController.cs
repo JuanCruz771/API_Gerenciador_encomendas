@@ -39,6 +39,13 @@ namespace API_Gerendiador_Encomendas.Controllers
         public IActionResult GetByCasa(string casa)
         {
             var morador = morador_repositorie.GetByCasa(casa);
+            if (morador == null)
+            {
+                return NotFound(new
+                {
+                    mensagem = $"Não foi encontrado nenhum morador cadastrado na casa {casa}."
+                });
+            }
 
             return Ok(morador);
         }
