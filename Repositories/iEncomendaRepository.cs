@@ -8,6 +8,10 @@ namespace API_Gerendiador_Encomendas.Repositories
         List<EncomendaModel> GetAll();
 
         EncomendaModel GetById(int id);
+
+        EncomendaModel GetByCodName(string codigo, string nome);
+
+        Task<int> DeleteByMorador(int id_morador);
         void save(EncomendaModel encomenda);
         void Update(EncomendaModel encomenda);
         void Delete(int id);

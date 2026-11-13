@@ -24,6 +24,26 @@ namespace API_Gerendiador_Encomendas.DAO
                 .FirstOrDefault(e => e.Id == id);
         }
 
+        public EncomendaModel GetByCodName(string codigo,string nome)
+        {
+            return context.encomendas
+           .FirstOrDefault(e =>
+               e.Codigo == codigo &&
+               e.Nome_morador == nome
+       );
+        }
+
+        public async Task<int> DeleteByMorador(int id_morador)
+        {
+            return await context.encomendas
+                .Where(e =>
+                    e.Id_morador == id_morador &&
+                    e.Data_entrega == null
+                )
+                .ExecuteDeleteAsync();
+        }
+
+
         public void save(EncomendaModel encomenda)
         {
             context.encomendas.Add(encomenda);

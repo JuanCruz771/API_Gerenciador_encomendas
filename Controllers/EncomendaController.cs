@@ -41,6 +41,20 @@ namespace API_Gerendiador_Encomendas.Controllers
         }
 
         [Authorize]
+        [HttpGet("cod_nome")]
+        public IActionResult GetByCodName(
+        [FromQuery] string codigo,
+        [FromQuery] string nome)
+        {
+            var encomenda = encomenda_repositorie.GetByCodName(codigo, nome);
+
+            if (encomenda == null)
+                return NotFound(new { mensagem = "Encomenda não encontrada." });
+
+            return Ok(encomenda);
+        }
+
+        [Authorize]
         [HttpPost]
         public IActionResult Post([FromBody] EncomendaModel encomeda)
         {
@@ -105,6 +119,26 @@ namespace API_Gerendiador_Encomendas.Controllers
             encomenda_repositorie.Delete(id);
 
             return Ok();
+        }
+
+        [Authorize]
+        [HttpDelete("morador/{id_morador}")]
+        public async Task<IActionResult> DeleteByMorador(int id_morador)
+        {
+            var quantidade = await encomenda_repositorie.DeleteByMorador(id_morador);
+
+            if (quantidade == 0)
+            {
+                return NotFound(new
+                {
+                    mensagem = "Não existem encomendas pendentes para excluir."
+                });
+            }
+
+            return Ok(new
+            {
+                mensagem = $"{quantidade} encomenda(s) pendente(s) excluída(s)."
+            });
         }
     }
 }
