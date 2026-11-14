@@ -95,7 +95,7 @@ namespace API_Gerendiador_Encomendas.Controllers
             return Ok();
         }
 
-        [HttpPut("{id}/entrega")]
+        [HttpPut("entrega/{id}")]
         public IActionResult Put_entrega(int id, [FromBody] EntregaModel dto)
         {
             var encomendaexist = encomenda_repositorie.GetById(id);
